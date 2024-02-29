@@ -75,23 +75,71 @@ double HT::standardDeviation()
 
 int hash_function(string text, int tableLength)
 {
-    int hash = 1;
+    unsigned long long hash = 0;
     int length = text.length();
     for (int i = 0; i < length; i++)
     {
-        // hash += text[i] * (i) % tableLength;
-        //      sample_input: 1.26491;
-        //      mit_a: 2.19545
-        //      common500: 3.07246
-        hash += text[i];
-        // hash += text[i];
-        //      sample_input: 1.09545;
-        //      mit_a: 2.76767
-        //      common500: 3.07246
+        hash = text[i] + (hash << 6) + (hash << 16) - hash;
     }
-    return hash;
+
+    return (int)(hash % tableLength);
 }
 
 // make &&  ./encoder < inputs/mit_a.txt
 //          ./encoder < inputs/sample_input.txt
 //          ./encoder < inputs/common500.txt
+
+// hash += text[i] * (i) % tableLength;
+//      sample_input:   1.26491;
+//      mit_a:          2.19545
+//      common500:      3.07246
+// hash += text[i];
+//      sample_input:   1.09545;
+//      mit_a:          2.76767
+//      common500:      3.07246
+// hash = (hash * 31 + text[i]) % tableLength;
+//      sample_input:   1.09545;
+//      mit_a:          2.55343;
+//      common500:      2.87054;
+// hash = (hash * 2 + text[i]);
+// hash % tablelength;
+//      sample_input:   1.54919;
+//      mit_a:          2.33238;
+//      common500:      3.09839;
+// hash = (hash * 31) + text[i];
+// (int)(hash % tableLength);
+//      sample_input:   1.09545;
+//      mit_a:          2.51794
+//      common500:      2.86356;
+// hash = 101
+// hash = (hash * 31) + text[i]; ------------best
+// (int)(hash % tableLength);
+//      sample_input:   1.09545;
+//      mit_a:          2.22261;
+//      common500:      2.89828;
+
+// unsigned long long hash = 1;
+// int prime = 0;
+// if (tableLength == 5)
+// {
+//     prime = 7;
+// }
+// else if (tableLength == 25)
+// {
+//     prime = 29;
+// }
+// else if (tableLength == 50)
+// {
+//     prime = 53;
+// }
+// else if (tableLength == 100)
+// {
+//     prime = 97;
+// }
+// int length = text.length();
+// for (int i = 0; i < length; i++)
+// {
+//     hash = text[i] + hash * prime;
+// }
+
+// return (int)(hash % tableLength);

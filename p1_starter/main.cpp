@@ -1,7 +1,7 @@
 /*
 CSE 310 Hash Function DIY Contest
 Instructor: Yiran "Lawrence" Luo
-Your name(s):
+Your name(s): Lev Natekin, Arya Yadav
 Your team alias:
 */
 
@@ -37,11 +37,10 @@ int main()
     for (int i = 0; i < n; i++)
     {
         int hash = hash_function(texts[i], k);
-        int slot = hash % k;
 
         // cout << texts[i] << ": " << slot << endl;
 
-        hashTable.insert(slot, texts[i]);
+        hashTable.insert(hash, texts[i]);
     }
 
     cout << "==== Printing the contents of the first 5 slots ====" << endl;
@@ -55,7 +54,7 @@ int main()
 
     cout << "==== Printing the slot lengths ====" << endl;
 
-    for (int j = 0; j < 5; j++)
+    for (int j = 0; j < k; j++)
     {
         SlotProperties *sp = hashTable.slotProperties(j);
         cout << "Slot " << j << ": " << sp->length << endl;
