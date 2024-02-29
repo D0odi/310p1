@@ -75,13 +75,12 @@ double HT::standardDeviation()
 
 int hash_function(string text, int tableLength)
 {
-    unsigned long long hash = 0;
+    unsigned long long hash = 101 * 101 * 101;
     int length = text.length();
     for (int i = 0; i < length; i++)
     {
-        hash = text[i] + (hash << 6) + (hash << 16) - hash;
+        hash = (hash * 53) + text[i];
     }
-
     return (int)(hash % tableLength);
 }
 
@@ -112,11 +111,17 @@ int hash_function(string text, int tableLength)
 //      mit_a:          2.51794
 //      common500:      2.86356;
 // hash = 101
-// hash = (hash * 31) + text[i]; ------------best
+// hash = (hash * 31) + text[i];
 // (int)(hash % tableLength);
 //      sample_input:   1.09545;
 //      mit_a:          2.22261;
 //      common500:      2.89828;
+// hash = 101 * 101 * 101
+// hash = (hash * 53) + text[i]; ------------best
+// (int)(hash % tableLength);
+//      sample_input:   1.09545;
+//      mit_a:          1.94422;
+//      common500:      2.16333;
 
 // unsigned long long hash = 1;
 // int prime = 0;
